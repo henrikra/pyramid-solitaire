@@ -23,22 +23,9 @@ axios
   .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
   .then(response => {
     const { cards } = response.data;
-    const firstRow = R.slice(0, 1, cards);
-    const secondRow = R.slice(1, 3, cards);
-    const thirdRow = R.slice(3, 6, cards);
-    const fourthRow = R.slice(6, 10, cards);
-    const fifthRow = R.slice(10, 15, cards);
-    const sixthRow = R.slice(15, 21, cards);
-    const seventhRow = R.slice(21, 28, cards);
-    const pyramidCards = [
-      firstRow,
-      secondRow,
-      thirdRow,
-      fourthRow,
-      fifthRow,
-      sixthRow,
-      seventhRow
-    ];
+    const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
+      R.slice(startingIndex, startingIndex + index + 1, cards)
+    );
     1;
   })
   .catch(error => {
