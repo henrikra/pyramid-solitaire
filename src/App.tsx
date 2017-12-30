@@ -212,7 +212,7 @@ class App extends React.Component<{}, State> {
             <div className="extra-card-stack" key={index}>
               {extraCardStack.map(extraCard => (
                 <div
-                  className={classNames('pyramid-card', 'extra-card', {
+                  className={classNames('pyramid-card', 'extra-card', 'pyramid-card--selectable', {
                     'pyramid-card--selected': selectedFirstCard
                       ? selectedFirstCard.code === extraCard.code
                       : false
