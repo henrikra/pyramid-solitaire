@@ -213,34 +213,39 @@ class App extends React.Component<{}, State> {
           ))}
         </div>
         {this.state.hasWonTheGame && <h1>You have won the game!</h1>}
-        {this.state.hasCardsInDeck ? (
-          <button onClick={this.drawFromDeck} disabled={this.state.isLoadingMoreCards}>
-            Deck
-          </button>
-        ) : (
-          <p>No more cards in the deck</p>
-        )}
-        <div className="extra-cards">
-          {this.state.extraCards.map((extraCardStack, index) => (
-            <div className="extra-card-stack" key={index}>
-              {extraCardStack.map(extraCard => (
-                <div
-                  className="pyramid-card extra-card pyramid-card--selectable"
-                  key={extraCard.code}
-                >
-                  <img
-                    className={classNames('pyramid-card__image', {
-                      'pyramid-card__image--selected': selectedFirstCard
-                        ? selectedFirstCard.code === extraCard.code
-                        : false
-                    })}
-                    src={extraCard.image}
-                    onClick={() => this.selectCard(extraCard)}
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
+        {!this.state.hasCardsInDeck && <p>No more cards in the deck</p>}
+        <div className="bottom-part">
+          <div className="extra-cards">
+            {this.state.extraCards.map((extraCardStack, index) => (
+              <div className="extra-card-stack" key={index}>
+                {extraCardStack.map(extraCard => (
+                  <div
+                    className="pyramid-card extra-card pyramid-card--selectable"
+                    key={extraCard.code}
+                  >
+                    <img
+                      className={classNames('pyramid-card__image', {
+                        'pyramid-card__image--selected': selectedFirstCard
+                          ? selectedFirstCard.code === extraCard.code
+                          : false
+                      })}
+                      src={extraCard.image}
+                      onClick={() => this.selectCard(extraCard)}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          {this.state.hasCardsInDeck && (
+            <button
+              onClick={this.drawFromDeck}
+              disabled={this.state.isLoadingMoreCards}
+              className="deck"
+            >
+              Deck
+            </button>
+          )}
         </div>
       </div>
     );

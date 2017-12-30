@@ -49,3 +49,14 @@
   top: 0;
   left: 0;
 }
+
+.deck {
+  width: var(--card-width);
+  height: 139px;
+}
+
+.bottom-part {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
