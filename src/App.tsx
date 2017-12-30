@@ -12,39 +12,11 @@ type Card = {
   isDeleted: boolean;
 };
 
-/*
-
-kortti on valittavissa jos
-- jos seuraavan rivin (rowIndex + 1) korteista samassa kortti indeksissä
-oleva kortti ja cardIndex + 1 ovat poissa
-
-[
-  [
-    {}
-  ],
-  [
-    {}, {}
-  ],
-  [
-    {}, {}, {}
-  ],
-  [
-    {}, {}, {}, {}
-  ],
-  [
-    {}, {}, {}, {}, {}
-  ],
-  [
-    {}, {}, {}, {}, {}, {}
-  ],
-  [
-    {}, {}, {}, {}, {}, {}, {}
-  ],
-]
-*/
-
 type ApiCard = {
+  code: string;
+  image: string;
   value: string;
+  isDeleted: boolean;
 };
 
 interface State {
@@ -77,11 +49,14 @@ const mapCardValueToNumber = (currentValue: string): number => {
   }
 };
 
-class App extends React.Component {
-  state: State = {
-    pyramidCards: [],
-    selectedFirstCard: undefined
-  };
+class App extends React.Component<{}, State> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      pyramidCards: [],
+      selectedFirstCard: undefined
+    };
+  }
 
   componentWillMount() {
     axios
