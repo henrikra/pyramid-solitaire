@@ -68,13 +68,12 @@ class App extends React.Component<{}, State> {
       .then(({ data }: { data: DeckOfCardsData }) => {
         const cards: Array<ApiCard> = data.cards;
         const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
-          R.slice(startingIndex, startingIndex + index + 1, cards)
-            .map(card => ({
-              ...card,
-              isDeleted: false,
-              value: mapCardValueToNumber(card.value)
-            }))
-            .map(card => ({ ...card, isSelectable: startingIndex === 21 }))
+          R.slice(startingIndex, startingIndex + index + 1, cards).map(card => ({
+            ...card,
+            isDeleted: false,
+            value: mapCardValueToNumber(card.value),
+            isSelectable: startingIndex === 21
+          }))
         );
         this.setState({ pyramidCards, deckId: data.deck_id });
       })
