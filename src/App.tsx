@@ -16,7 +16,6 @@ type ApiCard = {
   code: string;
   image: string;
   value: string;
-  isDeleted: boolean;
 };
 
 interface State {
@@ -67,6 +66,7 @@ class App extends React.Component<{}, State> {
           R.slice(startingIndex, startingIndex + index + 1, cards)
             .map(card => ({
               ...card,
+              isDeleted: false,
               value: mapCardValueToNumber(card.value)
             }))
             .map(card => ({ ...card, isSelectable: startingIndex === 21 }))
