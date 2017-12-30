@@ -58,19 +58,25 @@ const mapCardValueToNumber = (currentValue: string): number => {
   }
 };
 
+const initialState = {
+  pyramidCards: [],
+  extraCards: [[], [], []],
+  isLoadingMoreCards: false,
+  hasWonTheGame: false,
+  hasCardsInDeck: true
+};
+
 class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
-    this.state = {
-      pyramidCards: [],
-      extraCards: [[], [], []],
-      isLoadingMoreCards: false,
-      hasWonTheGame: false,
-      hasCardsInDeck: true
-    };
+    this.state = initialState;
   }
 
   componentWillMount() {
+    this.startNewGame();
+  }
+
+  startNewGame = () => {
     axios
       .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
       .then(({ data }: { data: DeckOfCardsData }) => {
@@ -88,7 +94,7 @@ class App extends React.Component<{}, State> {
       .catch(error => {
         console.log('error', error);
       });
-  }
+  };
 
   removeFromPyramid = (predicate: Function) => {
     const newCards = this.state.pyramidCards
@@ -176,6 +182,11 @@ class App extends React.Component<{}, State> {
       });
   };
 
+  resetGame = () => {
+    this.setState(initialState);
+    this.startNewGame();
+  };
+
   render() {
     console.log(this.state);
     const { selectedFirstCard } = this.state;
@@ -244,6 +255,7 @@ class App extends React.Component<{}, State> {
             {this.state.hasCardsInDeck ? 'Deck' : 'No cards left'}
           </button>
         </div>
+        {!this.state.hasCardsInDeck && <button onClick={this.resetGame}>Reset game</button>}
       </div>
     );
   }
