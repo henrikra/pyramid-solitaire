@@ -108,7 +108,14 @@ class App extends React.Component<{}, State> {
             nextPyramidCardRow[cardIndex].isDeleted && nextPyramidCardRow[cardIndex + 1].isDeleted
         }));
       });
-    this.setState({ pyramidCards: newCards });
+    this.setState({
+      pyramidCards: newCards,
+      extraCards: this.state.extraCards.map(extraCardStack =>
+        extraCardStack.filter(extraCard => {
+          return !predicate(extraCard);
+        })
+      )
+    });
   };
 
   selectCard = (selectedCard: Card) => {
