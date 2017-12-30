@@ -139,19 +139,23 @@ class App extends React.Component<{}, State> {
     axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
       .then(({ data }: { data: DeckOfCardsData }) => {
-        const initCards = data.cards.map(card => ({
-          ...card,
-          isDeleted: false,
-          value: mapCardValueToNumber(card.value),
-          isSelectable: true
-        }));
-        this.setState({
-          extraCards: this.state.extraCards.map((extraCardStack, index) => [
-            ...extraCardStack,
-            initCards[index]
-          ]),
-          isLoadingMoreCards: false
-        });
+        if (data.cards.length) {
+          const initCards = data.cards.map(card => ({
+            ...card,
+            isDeleted: false,
+            value: mapCardValueToNumber(card.value),
+            isSelectable: true
+          }));
+          this.setState({
+            extraCards: this.state.extraCards.map((extraCardStack, index) => [
+              ...extraCardStack,
+              initCards[index]
+            ]),
+            isLoadingMoreCards: false
+          });
+        } else {
+          this.setState({ isLoadingMoreCards: false });
+        }
       })
       .catch(error => {
         console.log(error);
