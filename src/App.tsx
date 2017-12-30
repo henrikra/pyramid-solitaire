@@ -104,15 +104,27 @@ class App extends React.Component {
   }
 
   removeFromPyramid = (predicate: Function) => {
-    const newCards = this.state.pyramidCards.map(pyramidCardRow =>
-      pyramidCardRow.map(pyramidCard => {
-        if (predicate(pyramidCard)) {
-          return { ...pyramidCard, isDeleted: true };
-        } else {
-          return pyramidCard;
+    const newCards = this.state.pyramidCards
+      .map(pyramidCardRow =>
+        pyramidCardRow.map(pyramidCard => {
+          if (predicate(pyramidCard)) {
+            return { ...pyramidCard, isDeleted: true };
+          } else {
+            return pyramidCard;
+          }
+        })
+      )
+      .map((pyramidCardRow, rowIndex, pyramidCards) => {
+        if (rowIndex === 6) {
+          return pyramidCardRow;
         }
-      })
-    );
+        const nextPyramidCardRow = pyramidCards[rowIndex + 1];
+        return pyramidCardRow.map((pyramidCard, cardIndex) => ({
+          ...pyramidCard,
+          isSelectable:
+            nextPyramidCardRow[cardIndex].isDeleted && nextPyramidCardRow[cardIndex + 1].isDeleted
+        }));
+      });
     this.setState({ pyramidCards: newCards });
   };
 
