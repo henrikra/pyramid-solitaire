@@ -1,3 +1,7 @@
+:root {
+  --card-width: 100px;
+}
+
 .pyramid {
   text-align: center;
 }
@@ -12,8 +16,7 @@
 }
 
 .pyramid-card {
-  --width: 100px;
-  width: var(--width);
+  width: var(--card-width);
   display: inline-block;
   transition: transform 150ms ease-out;
 }
@@ -29,4 +32,19 @@
 
 .pyramid-card__image {
   max-width: 100%;
+}
+
+.extra-cards {
+  display: flex;
+}
+
+.extra-card-stack {
+  position: relative;
+  width: var(--card-width);
+}
+
+.extra-card {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

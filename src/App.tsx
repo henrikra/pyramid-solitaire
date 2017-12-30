@@ -27,6 +27,7 @@ interface State {
   pyramidCards: Card[][];
   selectedFirstCard?: Card;
   deckId?: string;
+  extraCards: Card[][];
 }
 
 const mapCardValueToNumber = (currentValue: string): number => {
@@ -58,7 +59,8 @@ class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      pyramidCards: []
+      pyramidCards: [],
+      extraCards: [[], [], []]
     };
   }
 
@@ -133,8 +135,19 @@ class App extends React.Component<{}, State> {
   drawFromDeck = () => {
     axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
-      .then(response => {
-        console.log(response.data);
+      .then(({ data }: { data: DeckOfCardsData }) => {
+        const initCards = data.cards.map(card => ({
+          ...card,
+          isDeleted: false,
+          value: mapCardValueToNumber(card.value),
+          isSelectable: true
+        }));
+        this.setState({
+          extraCards: this.state.extraCards.map((extraCardStack, index) => [
+            ...extraCardStack,
+            initCards[index]
+          ])
+        });
       })
       .catch(error => {
         console.log(error);
@@ -177,6 +190,28 @@ class App extends React.Component<{}, State> {
           ))}
         </div>
         <button onClick={this.drawFromDeck}>Deck</button>
+        <div className="extra-cards">
+          {this.state.extraCards.map((extraCardStack, index) => (
+            <div className="extra-card-stack" key={index}>
+              {extraCardStack.map(extraCard => (
+                <div
+                  className={classNames('pyramid-card', 'extra-card', {
+                    'pyramid-card--selected': selectedFirstCard
+                      ? selectedFirstCard.code === extraCard.code
+                      : false
+                  })}
+                  key={extraCard.code}
+                >
+                  <img
+                    className="pyramid-card__image"
+                    src={extraCard.image}
+                    onClick={() => this.selectCard(extraCard)}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
