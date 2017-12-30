@@ -4,6 +4,7 @@
 
 .pyramid-row {
   margin-top: -100px;
+  height: 143px;
 }
 
 .pyramid-row--first {
@@ -18,9 +19,4 @@
 
 .pyramid-card__image {
   max-width: 100%;
-}
-
-.pyramid-card--removed {
-  display: inline-block;
-  width: var(--width);
 }

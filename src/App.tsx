@@ -147,9 +147,7 @@ class App extends React.Component {
             >
               {pyramidCardRow.map(pyramidCard => (
                 <div className="pyramid-card" key={pyramidCard.code}>
-                  {pyramidCard.isDeleted ? (
-                    <div className="pyramid-card--removed" />
-                  ) : (
+                  {!pyramidCard.isDeleted && (
                     <img
                       className="pyramid-card__image"
                       src={pyramidCard.image}
