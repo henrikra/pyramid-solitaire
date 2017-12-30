@@ -1,21 +1,34 @@
 import * as React from 'react';
 import './App.css';
+import axios from 'axios';
+import * as R from 'ramda';
 
 const logo = require('./logo.svg');
 
-type Card = {
-  image: string,
-  value: number,
-  isSelectable: boolean,
-  isDeleted: boolean,
-};
+// type Card = {
+//   image: string;
+//   value: number;
+//   isSelectable: boolean;
+//   isDeleted: boolean;
+// };
 
-const lol: Card = {
-  image: 'https://deckofcardsapi.com/static/img/KH.png',
-  value: 12,
-  isSelectable: false,
-  isDeleted: true,
-};
+// const lol: Card = {
+//   image: "https://deckofcardsapi.com/static/img/KH.png",
+//   value: 12,
+//   isSelectable: false,
+//   isDeleted: true
+// };
+
+axios
+  .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
+  .then(response => {
+    const { cards } = response.data;
+    console.log('cards', cards);
+    const result = R.range(0, 6);
+  })
+  .catch(error => {
+    console.log('error', error);
+  });
 /*
 
 kortti on valittavissa jos
