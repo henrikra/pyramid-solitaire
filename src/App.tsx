@@ -24,7 +24,7 @@ type ApiCard = {
 };
 
 interface State {
-  pyramidCards: Array<Array<Card>>;
+  pyramidCards: Card[][];
   selectedFirstCard?: Card;
   deckId?: string;
 }
@@ -66,7 +66,7 @@ class App extends React.Component<{}, State> {
     axios
       .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
       .then(({ data }: { data: DeckOfCardsData }) => {
-        const cards: Array<ApiCard> = data.cards;
+        const cards: ApiCard[] = data.cards;
         const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
           R.slice(startingIndex, startingIndex + index + 1, cards).map(card => ({
             ...card,
