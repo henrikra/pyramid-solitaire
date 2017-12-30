@@ -2,10 +2,12 @@ import * as React from 'react';
 import './App.css';
 import axios from 'axios';
 import * as R from 'ramda';
+import * as classNames from 'classnames';
 
 const logo = require('./logo.svg');
 
 type Card = {
+  code: string;
   image: string;
   value: number;
   isSelectable: boolean;
@@ -78,15 +80,24 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div className="pyramid">
+          {this.state.pyramidCards.map((pyramidCardRow, index) => (
+            <div
+              key={index}
+              className={classNames('pyramid-row', {
+                'pyramid-row--first': !index
+              })}
+            >
+              {pyramidCardRow.map(pyramidCard => (
+                <img
+                  className="pyramid-card"
+                  key={pyramidCard.code}
+                  src={pyramidCard.image}
+                />
+              ))}
+            </div>
+          ))}
         </div>
-        {this.state.pyramidCards.map(pyramidCardRow => (
-          <div>
-            {pyramidCardRow.map(pyramidCard => <img src={pyramidCard.image} />)}
-          </div>
-        ))}
       </div>
     );
   }
