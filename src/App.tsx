@@ -117,6 +117,10 @@ class App extends React.Component {
   };
 
   selectCard = (selectedCard: Card) => {
+    if (!selectedCard.isSelectable) {
+      this.setState({ selectedFirstCard: undefined });
+      return;
+    }
     const { selectedFirstCard } = this.state;
     if (selectedCard.value === 13) {
       this.removeFromPyramid((pyramidCard: Card) => pyramidCard.code === selectedCard.code);
@@ -137,6 +141,7 @@ class App extends React.Component {
 
   render() {
     console.log(this.state);
+    const { selectedFirstCard } = this.state;
     return (
       <div className="App">
         <div className="pyramid">
@@ -150,7 +155,10 @@ class App extends React.Component {
               {pyramidCardRow.map(pyramidCard => (
                 <div
                   className={classNames('pyramid-card', {
-                    'pyramid-card--selectable': pyramidCard.isSelectable
+                    'pyramid-card--selectable': pyramidCard.isSelectable,
+                    'pyramid-card--selected': selectedFirstCard
+                      ? selectedFirstCard.code === pyramidCard.code
+                      : false
                   })}
                   key={pyramidCard.code}
                 >

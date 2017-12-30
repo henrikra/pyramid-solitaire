@@ -18,6 +18,10 @@
   transition: transform 150ms ease-out;
 }
 
+.pyramid-card--selected {
+  border: 2px solid red;
+}
+
 .pyramid-card--selectable:hover {
   transform: translateY(-15px);
   cursor: pointer;
