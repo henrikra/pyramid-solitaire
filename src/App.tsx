@@ -101,27 +101,35 @@ class App extends React.Component {
       });
   }
 
+  removeFromPyramid = (predicate: Function) => {
+    const newCards = this.state.pyramidCards.map(pyramidCardRow =>
+      pyramidCardRow.map(pyramidCard => {
+        if (predicate(pyramidCard)) {
+          return { ...pyramidCard, isDeleted: true };
+        } else {
+          return pyramidCard;
+        }
+      })
+    );
+    this.setState({ pyramidCards: newCards });
+  };
+
   selectCard = (selectedCard: Card) => {
     const { selectedFirstCard } = this.state;
-    if (selectedFirstCard) {
-      if (selectedFirstCard.value + selectedCard.value === 13) {
-        const newCards = this.state.pyramidCards.map(pyramidCardRow =>
-          pyramidCardRow.map(pyramidCard => {
-            if (
-              selectedFirstCard.code === pyramidCard.code ||
-              selectedCard.code === pyramidCard.code
-            ) {
-              return { ...pyramidCard, isDeleted: true };
-            } else {
-              return pyramidCard;
-            }
-          })
-        );
-        this.setState({ pyramidCards: newCards });
-      }
-      this.setState({ selectedFirstCard: undefined });
+    if (selectedCard.value === 13) {
+      this.removeFromPyramid((pyramidCard: Card) => pyramidCard.code === selectedCard.code);
     } else {
-      this.setState({ selectedFirstCard: selectedCard });
+      if (selectedFirstCard) {
+        if (selectedFirstCard.value + selectedCard.value === 13) {
+          this.removeFromPyramid(
+            (pyramidCard: Card) =>
+              pyramidCard.code === selectedCard.code || selectedFirstCard.code === pyramidCard.code
+          );
+        }
+        this.setState({ selectedFirstCard: undefined });
+      } else {
+        this.setState({ selectedFirstCard: selectedCard });
+      }
     }
   };
 
