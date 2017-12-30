@@ -213,7 +213,6 @@ class App extends React.Component<{}, State> {
           ))}
         </div>
         {this.state.hasWonTheGame && <h1>You have won the game!</h1>}
-        {!this.state.hasCardsInDeck && <p>No more cards in the deck</p>}
         <div className="bottom-part">
           <div className="extra-cards">
             {this.state.extraCards.map((extraCardStack, index) => (
@@ -237,15 +236,13 @@ class App extends React.Component<{}, State> {
               </div>
             ))}
           </div>
-          {this.state.hasCardsInDeck && (
-            <button
-              onClick={this.drawFromDeck}
-              disabled={this.state.isLoadingMoreCards}
-              className="deck"
-            >
-              Deck
-            </button>
-          )}
+          <button
+            onClick={this.drawFromDeck}
+            disabled={this.state.isLoadingMoreCards || !this.state.hasCardsInDeck}
+            className="deck"
+          >
+            {this.state.hasCardsInDeck ? 'Deck' : 'No cards left'}
+          </button>
         </div>
       </div>
     );
