@@ -11,5 +11,16 @@
 }
 
 .pyramid-card {
-  width: 100px;
+  --width: 100px;
+  width: var(--width);
+  display: inline-block;
+}
+
+.pyramid-card__image {
+  max-width: 100%;
+}
+
+.pyramid-card--removed {
+  display: inline-block;
+  width: var(--width);
 }

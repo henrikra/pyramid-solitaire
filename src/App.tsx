@@ -88,11 +88,11 @@ class App extends React.Component {
       .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
       .then(response => {
         const cards: Array<ApiCard> = response.data.cards;
-        const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map(
-          (startingIndex, index) =>
-            R.slice(startingIndex, startingIndex + index + 1, cards).map(
-              card => ({ ...card, value: mapCardValueToNumber(card.value) })
-            )
+        const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
+          R.slice(startingIndex, startingIndex + index + 1, cards).map(card => ({
+            ...card,
+            value: mapCardValueToNumber(card.value)
+          }))
         );
         this.setState({ pyramidCards });
       })
@@ -101,14 +101,27 @@ class App extends React.Component {
       });
   }
 
-  selectCard = (card: Card) => {
-    if (this.state.selectedFirstCard) {
-      if (this.state.selectedFirstCard.value + card.value === 13) {
-        alert('You got a pair!');
+  selectCard = (selectedCard: Card) => {
+    const { selectedFirstCard } = this.state;
+    if (selectedFirstCard) {
+      if (selectedFirstCard.value + selectedCard.value === 13) {
+        const newCards = this.state.pyramidCards.map(pyramidCardRow =>
+          pyramidCardRow.map(pyramidCard => {
+            if (
+              selectedFirstCard.code === pyramidCard.code ||
+              selectedCard.code === pyramidCard.code
+            ) {
+              return { ...pyramidCard, isDeleted: true };
+            } else {
+              return pyramidCard;
+            }
+          })
+        );
+        this.setState({ pyramidCards: newCards });
       }
       this.setState({ selectedFirstCard: undefined });
     } else {
-      this.setState({ selectedFirstCard: card });
+      this.setState({ selectedFirstCard: selectedCard });
     }
   };
 
@@ -125,12 +138,17 @@ class App extends React.Component {
               })}
             >
               {pyramidCardRow.map(pyramidCard => (
-                <img
-                  className="pyramid-card"
-                  key={pyramidCard.code}
-                  src={pyramidCard.image}
-                  onClick={() => this.selectCard(pyramidCard)}
-                />
+                <div className="pyramid-card" key={pyramidCard.code}>
+                  {pyramidCard.isDeleted ? (
+                    <div className="pyramid-card--removed" />
+                  ) : (
+                    <img
+                      className="pyramid-card__image"
+                      src={pyramidCard.image}
+                      onClick={() => this.selectCard(pyramidCard)}
+                    />
+                  )}
+                </div>
               ))}
             </div>
           ))}
