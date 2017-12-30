@@ -132,7 +132,14 @@ class App extends React.Component<{}, State> {
   };
 
   drawFromDeck = () => {
-    console.log('draw', this.state.deckId);
+    axios
+      .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
