@@ -89,10 +89,12 @@ class App extends React.Component {
       .then(response => {
         const cards: Array<ApiCard> = response.data.cards;
         const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
-          R.slice(startingIndex, startingIndex + index + 1, cards).map(card => ({
-            ...card,
-            value: mapCardValueToNumber(card.value)
-          }))
+          R.slice(startingIndex, startingIndex + index + 1, cards)
+            .map(card => ({
+              ...card,
+              value: mapCardValueToNumber(card.value)
+            }))
+            .map(card => ({ ...card, isSelectable: startingIndex === 21 }))
         );
         this.setState({ pyramidCards });
       })
@@ -146,7 +148,12 @@ class App extends React.Component {
               })}
             >
               {pyramidCardRow.map(pyramidCard => (
-                <div className="pyramid-card" key={pyramidCard.code}>
+                <div
+                  className={classNames('pyramid-card', {
+                    'pyramid-card--selectable': pyramidCard.isSelectable
+                  })}
+                  key={pyramidCard.code}
+                >
                   {!pyramidCard.isDeleted && (
                     <img
                       className="pyramid-card__image"
