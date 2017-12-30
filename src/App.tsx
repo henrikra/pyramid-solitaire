@@ -28,6 +28,7 @@ interface State {
   selectedFirstCard?: Card;
   deckId?: string;
   extraCards: Card[][];
+  isLoadingMoreCards: boolean;
 }
 
 const mapCardValueToNumber = (currentValue: string): number => {
@@ -60,7 +61,8 @@ class App extends React.Component<{}, State> {
     super(props);
     this.state = {
       pyramidCards: [],
-      extraCards: [[], [], []]
+      extraCards: [[], [], []],
+      isLoadingMoreCards: false
     };
   }
 
@@ -133,6 +135,7 @@ class App extends React.Component<{}, State> {
   };
 
   drawFromDeck = () => {
+    this.setState({ isLoadingMoreCards: true });
     axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
       .then(({ data }: { data: DeckOfCardsData }) => {
@@ -146,7 +149,8 @@ class App extends React.Component<{}, State> {
           extraCards: this.state.extraCards.map((extraCardStack, index) => [
             ...extraCardStack,
             initCards[index]
-          ])
+          ]),
+          isLoadingMoreCards: false
         });
       })
       .catch(error => {
@@ -189,7 +193,9 @@ class App extends React.Component<{}, State> {
             </div>
           ))}
         </div>
-        <button onClick={this.drawFromDeck}>Deck</button>
+        <button onClick={this.drawFromDeck} disabled={this.state.isLoadingMoreCards}>
+          Deck
+        </button>
         <div className="extra-cards">
           {this.state.extraCards.map((extraCardStack, index) => (
             <div className="extra-card-stack" key={index}>
