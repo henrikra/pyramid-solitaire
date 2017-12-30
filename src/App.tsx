@@ -185,16 +185,17 @@ class App extends React.Component<{}, State> {
               {pyramidCardRow.map(pyramidCard => (
                 <div
                   className={classNames('pyramid-card', {
-                    'pyramid-card--selectable': pyramidCard.isSelectable,
-                    'pyramid-card--selected': selectedFirstCard
-                      ? selectedFirstCard.code === pyramidCard.code
-                      : false
+                    'pyramid-card--selectable': pyramidCard.isSelectable
                   })}
                   key={pyramidCard.code}
                 >
                   {!pyramidCard.isDeleted && (
                     <img
-                      className="pyramid-card__image"
+                      className={classNames('pyramid-card__image', {
+                        'pyramid-card__image--selected': selectedFirstCard
+                          ? selectedFirstCard.code === pyramidCard.code
+                          : false
+                      })}
                       src={pyramidCard.image}
                       onClick={() => this.selectCard(pyramidCard)}
                     />
@@ -212,15 +213,15 @@ class App extends React.Component<{}, State> {
             <div className="extra-card-stack" key={index}>
               {extraCardStack.map(extraCard => (
                 <div
-                  className={classNames('pyramid-card', 'extra-card', 'pyramid-card--selectable', {
-                    'pyramid-card--selected': selectedFirstCard
-                      ? selectedFirstCard.code === extraCard.code
-                      : false
-                  })}
+                  className="pyramid-card extra-card pyramid-card--selectable"
                   key={extraCard.code}
                 >
                   <img
-                    className="pyramid-card__image"
+                    className={classNames('pyramid-card__image', {
+                      'pyramid-card__image--selected': selectedFirstCard
+                        ? selectedFirstCard.code === extraCard.code
+                        : false
+                    })}
                     src={extraCard.image}
                     onClick={() => this.selectCard(extraCard)}
                   />

@@ -21,10 +21,6 @@
   transition: transform 150ms ease-out;
 }
 
-.pyramid-card--selected {
-  border: 2px solid red;
-}
-
 .pyramid-card--selectable:hover {
   transform: scale(1.05);
   cursor: pointer;
@@ -32,6 +28,11 @@
 
 .pyramid-card__image {
   max-width: 100%;
+}
+
+.pyramid-card__image--selected {
+  box-shadow: 0px 0px 20px red;
+  border-radius: 7px;
 }
 
 .extra-cards {
