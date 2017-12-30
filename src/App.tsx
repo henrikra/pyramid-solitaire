@@ -29,6 +29,8 @@ interface State {
   deckId?: string;
   extraCards: Card[][];
   isLoadingMoreCards: boolean;
+  hasWonTheGame: boolean;
+  hasCardsInDeck: boolean;
 }
 
 const mapCardValueToNumber = (currentValue: string): number => {
@@ -62,7 +64,9 @@ class App extends React.Component<{}, State> {
     this.state = {
       pyramidCards: [],
       extraCards: [[], [], []],
-      isLoadingMoreCards: false
+      isLoadingMoreCards: false,
+      hasWonTheGame: false,
+      hasCardsInDeck: true
     };
   }
 
@@ -114,6 +118,9 @@ class App extends React.Component<{}, State> {
         extraCardStack.filter(extraCard => {
           return !predicate(extraCard);
         })
+      ),
+      hasWonTheGame: newCards.every(pyramidCardRow =>
+        pyramidCardRow.every(pyramidCard => pyramidCard.isDeleted)
       )
     });
   };
@@ -161,7 +168,7 @@ class App extends React.Component<{}, State> {
             isLoadingMoreCards: false
           });
         } else {
-          this.setState({ isLoadingMoreCards: false });
+          this.setState({ isLoadingMoreCards: false, hasCardsInDeck: false });
         }
       })
       .catch(error => {
@@ -205,9 +212,14 @@ class App extends React.Component<{}, State> {
             </div>
           ))}
         </div>
-        <button onClick={this.drawFromDeck} disabled={this.state.isLoadingMoreCards}>
-          Deck
-        </button>
+        {this.state.hasWonTheGame && <h1>You have won the game!</h1>}
+        {this.state.hasCardsInDeck ? (
+          <button onClick={this.drawFromDeck} disabled={this.state.isLoadingMoreCards}>
+            Deck
+          </button>
+        ) : (
+          <p>No more cards in the deck</p>
+        )}
         <div className="extra-cards">
           {this.state.extraCards.map((extraCardStack, index) => (
             <div className="extra-card-stack" key={index}>
