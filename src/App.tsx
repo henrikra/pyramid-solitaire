@@ -12,6 +12,11 @@ type Card = {
   isDeleted: boolean;
 };
 
+type DeckOfCardsData = {
+  cards: ApiCard[];
+  deck_id: string;
+};
+
 type ApiCard = {
   code: string;
   image: string;
@@ -21,6 +26,7 @@ type ApiCard = {
 interface State {
   pyramidCards: Array<Array<Card>>;
   selectedFirstCard?: Card;
+  deckId?: string;
 }
 
 const mapCardValueToNumber = (currentValue: string): number => {
@@ -52,16 +58,15 @@ class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      pyramidCards: [],
-      selectedFirstCard: undefined
+      pyramidCards: []
     };
   }
 
   componentWillMount() {
     axios
       .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
-      .then(response => {
-        const cards: Array<ApiCard> = response.data.cards;
+      .then(({ data }: { data: DeckOfCardsData }) => {
+        const cards: Array<ApiCard> = data.cards;
         const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
           R.slice(startingIndex, startingIndex + index + 1, cards)
             .map(card => ({
@@ -71,7 +76,7 @@ class App extends React.Component<{}, State> {
             }))
             .map(card => ({ ...card, isSelectable: startingIndex === 21 }))
         );
-        this.setState({ pyramidCards });
+        this.setState({ pyramidCards, deckId: data.deck_id });
       })
       .catch(error => {
         console.log('error', error);
@@ -126,6 +131,10 @@ class App extends React.Component<{}, State> {
     }
   };
 
+  drawFromDeck = () => {
+    console.log('draw', this.state.deckId);
+  };
+
   render() {
     console.log(this.state);
     const { selectedFirstCard } = this.state;
@@ -161,6 +170,7 @@ class App extends React.Component<{}, State> {
             </div>
           ))}
         </div>
+        <button onClick={this.drawFromDeck}>Deck</button>
       </div>
     );
   }
