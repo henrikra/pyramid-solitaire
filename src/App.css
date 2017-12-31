@@ -1,5 +1,6 @@
 :root {
   --card-width: 100px;
+  --card-height: 139px;
 }
 
 .pyramid {
@@ -8,7 +9,7 @@
 
 .pyramid-row {
   margin-top: -100px;
-  height: 143px;
+  height: var(--card-height);
 }
 
 .pyramid-row--first {
@@ -32,7 +33,7 @@
 
 .deck {
   width: var(--card-width);
-  height: 139px;
+  height: var(--card-height);
 }
 
 .bottom-part {
