@@ -211,6 +211,7 @@ class App extends React.Component<{}, State> {
                   isSelected={
                     selectedFirstCard ? selectedFirstCard.code === pyramidCard.code : false
                   }
+                  onClick={() => this.selectCard(pyramidCard)}
                 />
               ))}
             </div>
@@ -231,6 +232,7 @@ class App extends React.Component<{}, State> {
                     isSelected={
                       selectedFirstCard ? selectedFirstCard.code === extraCard.code : false
                     }
+                    onClick={() => this.selectCard(extraCard)}
                   />
                 ))}
               </div>
