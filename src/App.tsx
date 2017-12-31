@@ -196,7 +196,7 @@ class App extends React.Component<{}, State> {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         <div className="pyramid">
           {this.state.pyramidCards.map((pyramidCardRow, index) => (
             <div

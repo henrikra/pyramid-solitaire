@@ -1,6 +1,12 @@
 :root {
-  --card-width: 100px;
+  --card-width: 13vw;
+  --card-max-width: 100px;
   --card-height: 139px;
+}
+
+.app {
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .pyramid {
@@ -23,6 +29,7 @@
 .extra-card-stack {
   position: relative;
   width: var(--card-width);
+  max-width: var(--card-max-width);
 }
 
 .extra-card {
@@ -33,6 +40,7 @@
 
 .deck {
   width: var(--card-width);
+  max-width: var(--card-max-width);
   height: var(--card-height);
 }
 

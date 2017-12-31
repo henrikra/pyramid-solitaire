@@ -1,5 +1,6 @@
 .card {
   width: var(--card-width);
+  max-width: var(--card-max-width);
   display: inline-block;
   transition: transform 150ms ease-out;
   cursor: pointer;
