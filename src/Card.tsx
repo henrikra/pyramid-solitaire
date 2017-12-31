@@ -11,18 +11,16 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLImageElement>) => void;
 };
 
-const Card = ({ isSelectable, isVisible, isSelected, image, classes, onClick }: Props) => {
-  return (
-    <div className={classNames('card', classes, { 'card--selectable': isSelectable })}>
-      {isVisible && (
-        <img
-          className={classNames('card__image', { 'card__image--selected': isSelected })}
-          src={image}
-          onClick={onClick}
-        />
-      )}
-    </div>
-  );
-};
+const Card = ({ isSelectable, isVisible, isSelected, image, classes, onClick }: Props) => (
+  <div className={classNames('card', classes, { 'card--selectable': isSelectable })}>
+    {isVisible && (
+      <img
+        className={classNames('card__image', { 'card__image--selected': isSelected })}
+        src={image}
+        onClick={onClick}
+      />
+    )}
+  </div>
+);
 
 export default Card;
