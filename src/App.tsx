@@ -189,9 +189,12 @@ class App extends React.Component<{}, State> {
     this.startNewGame();
   };
 
-  render() {
-    console.log(this.state);
+  isCardSelected = (cardCode: string) => {
     const { selectedFirstCard } = this.state;
+    return selectedFirstCard ? selectedFirstCard.code === cardCode : false;
+  };
+
+  render() {
     return (
       <div className="App">
         <div className="pyramid">
@@ -208,9 +211,7 @@ class App extends React.Component<{}, State> {
                   image={pyramidCard.image}
                   isVisible={!pyramidCard.isDeleted}
                   isSelectable={pyramidCard.isSelectable}
-                  isSelected={
-                    selectedFirstCard ? selectedFirstCard.code === pyramidCard.code : false
-                  }
+                  isSelected={this.isCardSelected(pyramidCard.code)}
                   onClick={() => this.selectCard(pyramidCard)}
                 />
               ))}
@@ -229,9 +230,7 @@ class App extends React.Component<{}, State> {
                     isSelectable={true}
                     image={extraCard.image}
                     isVisible={true}
-                    isSelected={
-                      selectedFirstCard ? selectedFirstCard.code === extraCard.code : false
-                    }
+                    isSelected={this.isCardSelected(extraCard.code)}
                     onClick={() => this.selectCard(extraCard)}
                   />
                 ))}
