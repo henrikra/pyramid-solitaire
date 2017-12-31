@@ -27,7 +27,7 @@ type ApiCard = {
 
 interface State {
   pyramidCards: Card[][];
-  selectedFirstCard?: Card;
+  selectedCard?: Card;
   deckId?: string;
   extraCards: Card[][];
   isLoadingMoreCards: boolean;
@@ -133,25 +133,25 @@ class App extends React.Component<{}, State> {
     });
   };
 
-  selectCard = (selectedCard: Card) => {
-    if (!selectedCard.isSelectable) {
-      this.setState({ selectedFirstCard: undefined });
+  selectCard = (clickedCard: Card) => {
+    if (!clickedCard.isSelectable) {
+      this.setState({ selectedCard: undefined });
       return;
     }
-    const { selectedFirstCard } = this.state;
-    if (selectedCard.value === 13) {
-      this.removeFromPyramid((pyramidCard: Card) => pyramidCard.code === selectedCard.code);
+    const { selectedCard } = this.state;
+    if (clickedCard.value === 13) {
+      this.removeFromPyramid((pyramidCard: Card) => pyramidCard.code === clickedCard.code);
     } else {
-      if (selectedFirstCard) {
-        if (selectedFirstCard.value + selectedCard.value === 13) {
+      if (selectedCard) {
+        if (selectedCard.value + clickedCard.value === 13) {
           this.removeFromPyramid(
             (pyramidCard: Card) =>
-              pyramidCard.code === selectedCard.code || selectedFirstCard.code === pyramidCard.code
+              pyramidCard.code === clickedCard.code || selectedCard.code === pyramidCard.code
           );
         }
-        this.setState({ selectedFirstCard: undefined });
+        this.setState({ selectedCard: undefined });
       } else {
-        this.setState({ selectedFirstCard: selectedCard });
+        this.setState({ selectedCard: clickedCard });
       }
     }
   };
@@ -190,8 +190,8 @@ class App extends React.Component<{}, State> {
   };
 
   isCardSelected = (cardCode: string) => {
-    const { selectedFirstCard } = this.state;
-    return selectedFirstCard ? selectedFirstCard.code === cardCode : false;
+    const { selectedCard } = this.state;
+    return selectedCard ? selectedCard.code === cardCode : false;
   };
 
   render() {
