@@ -3,12 +3,12 @@
   max-width: var(--card-max-width);
   display: inline-block;
   transition: transform 150ms ease-out;
-  cursor: pointer;
 }
 
 .card--selectable:hover {
   transform: scale(1.05);
   z-index: 1;
+  cursor: pointer;
 }
 
 .card__image {
