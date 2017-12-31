@@ -4,6 +4,8 @@ import axios from 'axios';
 import * as R from 'ramda';
 import * as classNames from 'classnames';
 
+import Card from './Card';
+
 type Card = {
   code: string;
   image: string;
@@ -201,24 +203,15 @@ class App extends React.Component<{}, State> {
               })}
             >
               {pyramidCardRow.map(pyramidCard => (
-                <div
-                  className={classNames('pyramid-card', {
-                    'pyramid-card--selectable': pyramidCard.isSelectable
-                  })}
+                <Card
                   key={pyramidCard.code}
-                >
-                  {!pyramidCard.isDeleted && (
-                    <img
-                      className={classNames('pyramid-card__image', {
-                        'pyramid-card__image--selected': selectedFirstCard
-                          ? selectedFirstCard.code === pyramidCard.code
-                          : false
-                      })}
-                      src={pyramidCard.image}
-                      onClick={() => this.selectCard(pyramidCard)}
-                    />
-                  )}
-                </div>
+                  image={pyramidCard.image}
+                  isVisible={!pyramidCard.isDeleted}
+                  isSelectable={pyramidCard.isSelectable}
+                  isSelected={
+                    selectedFirstCard ? selectedFirstCard.code === pyramidCard.code : false
+                  }
+                />
               ))}
             </div>
           ))}
@@ -229,20 +222,16 @@ class App extends React.Component<{}, State> {
             {this.state.extraCards.map((extraCardStack, index) => (
               <div className="extra-card-stack" key={index}>
                 {extraCardStack.map(extraCard => (
-                  <div
-                    className="pyramid-card extra-card pyramid-card--selectable"
+                  <Card
                     key={extraCard.code}
-                  >
-                    <img
-                      className={classNames('pyramid-card__image', {
-                        'pyramid-card__image--selected': selectedFirstCard
-                          ? selectedFirstCard.code === extraCard.code
-                          : false
-                      })}
-                      src={extraCard.image}
-                      onClick={() => this.selectCard(extraCard)}
-                    />
-                  </div>
+                    classes="extra-card"
+                    isSelectable={true}
+                    image={extraCard.image}
+                    isVisible={true}
+                    isSelected={
+                      selectedFirstCard ? selectedFirstCard.code === extraCard.code : false
+                    }
+                  />
                 ))}
               </div>
             ))}

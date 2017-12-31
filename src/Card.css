@@ -1,0 +1,19 @@
+.card {
+  width: var(--card-width);
+  display: inline-block;
+  transition: transform 150ms ease-out;
+  cursor: pointer;
+}
+
+.card--selectable:hover {
+  transform: scale(1.05);
+}
+
+.card__image {
+  max-width: 100%;
+}
+
+.card__image--selected {
+  box-shadow: 0px 0px 20px red;
+  border-radius: 7px;
+}
