@@ -245,8 +245,9 @@ class App extends React.Component<{}, State> {
             {this.state.hasCardsInDeck ? 'Deck' : 'No cards left'}
           </button>
         </div>
-        {!this.state.hasCardsInDeck ||
-          (this.state.hasWonTheGame && <button onClick={this.resetGame}>Reset game</button>)}
+        {(!this.state.hasCardsInDeck || this.state.hasWonTheGame) && (
+          <button onClick={this.resetGame}>Reset game</button>
+        )}
       </div>
     );
   }
