@@ -94,7 +94,7 @@ class App extends React.Component<{}, State> {
         this.setState({ pyramidCards, deckId: data.deck_id });
       })
       .catch(error => {
-        console.log('error', error);
+        console.error('error', error);
       });
   };
 
@@ -177,7 +177,7 @@ class App extends React.Component<{}, State> {
         });
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   };
 
