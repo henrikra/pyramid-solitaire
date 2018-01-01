@@ -157,7 +157,7 @@ class App extends React.Component<{}, State> {
   };
 
   drawFromDeck = () => {
-    this.setState({ isLoadingMoreCards: true });
+    this.setState({ isLoadingMoreCards: true, selectedCard: undefined });
     axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
       .then(({ data }: { data: DeckOfCardsData }) => {
