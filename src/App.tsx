@@ -83,9 +83,8 @@ class App extends React.Component<{}, State> {
     axios
       .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
       .then(({ data }: { data: DeckOfCardsData }) => {
-        const cards: ApiCard[] = data.cards;
         const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
-          R.slice(startingIndex, startingIndex + index + 1, cards).map(card => ({
+          R.slice(startingIndex, startingIndex + index + 1, data.cards).map(card => ({
             ...card,
             isDeleted: false,
             value: mapCardValueToNumber(card.value),
