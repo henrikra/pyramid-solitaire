@@ -17,6 +17,7 @@ type Card = {
 type DeckOfCardsData = {
   cards: ApiCard[];
   deck_id: string;
+  remaining: number;
 };
 
 type ApiCard = {
@@ -161,23 +162,20 @@ class App extends React.Component<{}, State> {
     axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
       .then(({ data }: { data: DeckOfCardsData }) => {
-        if (data.cards.length) {
-          const initCards = data.cards.map(card => ({
-            ...card,
-            isDeleted: false,
-            value: mapCardValueToNumber(card.value),
-            isSelectable: true
-          }));
-          this.setState({
-            extraCards: this.state.extraCards.map((extraCardStack, index) => [
-              ...extraCardStack,
-              initCards[index]
-            ]),
-            isLoadingMoreCards: false
-          });
-        } else {
-          this.setState({ isLoadingMoreCards: false, hasCardsInDeck: false });
-        }
+        const initCards = data.cards.map(card => ({
+          ...card,
+          isDeleted: false,
+          value: mapCardValueToNumber(card.value),
+          isSelectable: true
+        }));
+        this.setState({
+          extraCards: this.state.extraCards.map((extraCardStack, index) => [
+            ...extraCardStack,
+            initCards[index]
+          ]),
+          isLoadingMoreCards: false,
+          hasCardsInDeck: data.remaining > 0
+        });
       })
       .catch(error => {
         console.log(error);
