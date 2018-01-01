@@ -198,9 +198,7 @@ class App extends React.Component<{}, State> {
           {this.state.pyramidCards.map((pyramidCardRow, index) => (
             <div
               key={index}
-              className={classNames('pyramid-row', {
-                'pyramid-row--first': !index
-              })}
+              className={classNames('pyramid-row', { 'pyramid-row--first': !index })}
             >
               {pyramidCardRow.map(pyramidCard => (
                 <Card
