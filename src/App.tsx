@@ -79,23 +79,23 @@ class App extends React.Component<{}, State> {
     this.startNewGame();
   }
 
-  startNewGame = () => {
-    axios
-      .get('https://deckofcardsapi.com/api/deck/new/draw/?count=28')
-      .then(({ data }: { data: DeckOfCardsData }) => {
-        const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
-          R.slice(startingIndex, startingIndex + index + 1, data.cards).map(card => ({
-            ...card,
-            isDeleted: false,
-            value: mapCardValueToNumber(card.value),
-            isSelectable: startingIndex === 21
-          }))
-        );
-        this.setState({ pyramidCards, deckId: data.deck_id });
-      })
-      .catch(error => {
-        console.error('error', error);
-      });
+  startNewGame = async () => {
+    try {
+      const { data }: { data: DeckOfCardsData } = await axios.get(
+        'https://deckofcardsapi.com/api/deck/new/draw/?count=28'
+      );
+      const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
+        R.slice(startingIndex, startingIndex + index + 1, data.cards).map(card => ({
+          ...card,
+          isDeleted: false,
+          value: mapCardValueToNumber(card.value),
+          isSelectable: startingIndex === 21
+        }))
+      );
+      this.setState({ pyramidCards, deckId: data.deck_id });
+    } catch (error) {
+      console.error('error', error);
+    }
   };
 
   removeFromPyramid = (predicate: Function) => {
@@ -156,29 +156,29 @@ class App extends React.Component<{}, State> {
     }
   };
 
-  drawFromDeck = () => {
+  drawFromDeck = async () => {
     this.setState({ isLoadingMoreCards: true, selectedCard: undefined });
-    axios
-      .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`)
-      .then(({ data }: { data: DeckOfCardsData }) => {
-        const initCards = data.cards.map(card => ({
-          ...card,
-          isDeleted: false,
-          value: mapCardValueToNumber(card.value),
-          isSelectable: true
-        }));
-        this.setState({
-          extraCards: this.state.extraCards.map((extraCardStack, index) => [
-            ...extraCardStack,
-            initCards[index]
-          ]),
-          isLoadingMoreCards: false,
-          hasCardsInDeck: data.remaining > 0
-        });
-      })
-      .catch(error => {
-        console.error(error);
+    try {
+      const { data }: { data: DeckOfCardsData } = await axios.get(
+        `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`
+      );
+      const initCards = data.cards.map(card => ({
+        ...card,
+        isDeleted: false,
+        value: mapCardValueToNumber(card.value),
+        isSelectable: true
+      }));
+      this.setState({
+        extraCards: this.state.extraCards.map((extraCardStack, index) => [
+          ...extraCardStack,
+          initCards[index]
+        ]),
+        isLoadingMoreCards: false,
+        hasCardsInDeck: data.remaining > 0
       });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   resetGame = () => {
