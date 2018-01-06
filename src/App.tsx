@@ -123,9 +123,7 @@ class App extends React.Component<{}, State> {
     this.setState({
       pyramidCards: newCards,
       extraCards: this.state.extraCards.map(extraCardStack =>
-        extraCardStack.filter(extraCard => {
-          return !predicate(extraCard);
-        })
+        extraCardStack.filter(extraCard => !predicate(extraCard))
       ),
       hasWonTheGame: newCards.every(pyramidCardRow =>
         pyramidCardRow.every(pyramidCard => pyramidCard.isDeleted)
