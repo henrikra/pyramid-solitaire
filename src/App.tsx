@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import axios from 'axios';
-import * as R from 'ramda';
+import { slice, pipe, assoc, equals } from 'ramda';
 import * as classNames from 'classnames';
 
 import Card from './Card';
@@ -69,6 +69,12 @@ const initialState = {
   hasCardsInDeck: true
 };
 
+const initCards: (startingIndex: number) => (apiCard: ApiCard) => Card = startingIndex =>
+  pipe(assoc('isSelectable', equals(startingIndex, 21)), assoc('isDeleted', false), apiCard => ({
+    ...apiCard,
+    value: mapCardValueToNumber(apiCard.value)
+  }));
+
 class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
@@ -85,12 +91,7 @@ class App extends React.Component<{}, State> {
         'https://deckofcardsapi.com/api/deck/new/draw/?count=28'
       );
       const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
-        R.slice(startingIndex, startingIndex + index + 1, data.cards).map(card => ({
-          ...card,
-          isDeleted: false,
-          value: mapCardValueToNumber(card.value),
-          isSelectable: startingIndex === 21
-        }))
+        slice(startingIndex, startingIndex + index + 1, data.cards).map(initCards(startingIndex))
       );
       this.setState({ pyramidCards, deckId: data.deck_id });
     } catch (error) {
