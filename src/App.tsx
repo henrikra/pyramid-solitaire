@@ -188,7 +188,7 @@ class App extends React.Component<{}, State> {
 
   isCardSelected = (cardCode: string) => {
     const { selectedCard } = this.state;
-    return selectedCard ? selectedCard.code === cardCode : false;
+    return !!selectedCard && selectedCard.code === cardCode;
   };
 
   render() {
