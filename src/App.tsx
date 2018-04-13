@@ -99,7 +99,7 @@ class App extends React.Component<{}, State> {
     }
   };
 
-  removeFromPyramid = (predicate: Function) => {
+  removeFromPyramid = (predicate: (card: Card) => boolean) => {
     const newCards = this.state.pyramidCards
       .map(pyramidCardRow =>
         pyramidCardRow.map(pyramidCard => {
