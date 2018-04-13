@@ -87,7 +87,7 @@ class App extends React.Component<{}, State> {
 
   startNewGame = async () => {
     try {
-      const { data }: { data: DeckOfCardsData } = await axios.get(
+      const { data } = await axios.get<DeckOfCardsData>(
         'https://deckofcardsapi.com/api/deck/new/draw/?count=28'
       );
       const pyramidCards = [0, 1, 3, 6, 10, 15, 21].map((startingIndex, index) =>
@@ -158,7 +158,7 @@ class App extends React.Component<{}, State> {
   drawFromDeck = async () => {
     this.setState({ isLoadingMoreCards: true, selectedCard: undefined });
     try {
-      const { data }: { data: DeckOfCardsData } = await axios.get(
+      const { data } = await axios.get<DeckOfCardsData>(
         `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`
       );
       const initedCards = data.cards.map(card => ({
