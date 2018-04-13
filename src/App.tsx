@@ -161,7 +161,7 @@ class App extends React.Component<{}, State> {
       const { data }: { data: DeckOfCardsData } = await axios.get(
         `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=3`
       );
-      const initCards = data.cards.map(card => ({
+      const initedCards = data.cards.map(card => ({
         ...card,
         isDeleted: false,
         value: mapCardValueToNumber(card.value),
@@ -170,13 +170,14 @@ class App extends React.Component<{}, State> {
       this.setState({
         extraCards: this.state.extraCards.map((extraCardStack, index) => [
           ...extraCardStack,
-          initCards[index]
+          initedCards[index]
         ]),
         isLoadingMoreCards: false,
         hasCardsInDeck: data.remaining > 0
       });
     } catch (error) {
       console.error(error);
+      this.setState({ isLoadingMoreCards: false });
     }
   };
 
