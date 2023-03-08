@@ -5,6 +5,10 @@
   transition: transform 150ms ease-out;
 }
 
+.card--selectable {
+  pointer-events: all;
+}
+
 .card--selectable:hover {
   transform: scale(1.05);
   z-index: 1;
